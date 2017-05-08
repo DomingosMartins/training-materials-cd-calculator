@@ -25,20 +25,33 @@ pipeline {
     }
     stage("Docker build") {
       steps {
-        sh "docker build -t localhost:5000/calculator ."
+        sh "docker build -t 192.168.1.2:5000/calculator ."
       }
     }
     stage("Docker push") {
       steps {
-        sh "docker push localhost:5000/calculator"
+        sh "docker push 192.168.1.2:5000/calculator"
       }
     }
     stage("Acceptance test") {
       steps {
-        sh "docker run -d -p 8765:8080 --name calculator localhost:5000/calculator"
+        sh "docker run -d -p 8765:8080 --name calculator 192.168.1.2:5000/calculator"
         sleep 60
         sh "./acceptance_test.sh"
         sh "docker stop calculator"
+      }
+    }
+    stage("Release") {
+      steps {
+        sh "docker -H 192.168.1.4 stop calculator | true"
+        sh "docker -H 192.168.1.4 rm calculator | true"
+        sh "docker -H 192.168.1.4 run -d -p 8765:8080 --name calculator 192.168.1.2:5000/calculator"
+      }
+    }
+    stage("Smoke test") {
+      steps {
+        sleep 60
+        sh "./smoke_test.sh"
       }
     }
   }
