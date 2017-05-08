@@ -39,6 +39,7 @@ pipeline {
         sleep 60
         sh "./acceptance_test.sh"
         sh "docker stop calculator"
+        sh "docker rm calculator"
       }
     }
     stage("Release") {
