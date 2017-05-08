@@ -25,7 +25,7 @@ pipeline {
     }
     stage("Docker build") {
       steps {
-        sh "docker build -t calculator ."
+        sh "sudo docker build -t calculator ."
       }
     }
   }
