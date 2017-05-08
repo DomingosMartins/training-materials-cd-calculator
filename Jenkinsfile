@@ -35,7 +35,7 @@ pipeline {
     }
     stage("Acceptance test") {
       steps {
-        sh "docker run -d --rm -p 8765:8080 -name calculator localhost:5000/calculator"
+        sh "docker run -d --rm -p 8765:8080 --name calculator localhost:5000/calculator"
         sleep 60
         sh "./acceptance_test.sh"
         sh "docker stop calculator"
