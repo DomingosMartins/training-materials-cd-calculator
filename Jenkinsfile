@@ -46,7 +46,7 @@ pipeline {
       steps {
         sh "docker -H 192.168.1.4:2375 stop calculator | true"
         sh "docker -H 192.168.1.4:2375 rm calculator | true"
-        sh "docker -H 192.168.1.4:2375 run -d -p 8765:8080 --name calculator 192.168.1.2:5000/calculator"
+        sh "docker -H 192.168.1.4:2375 run -d -p 8080:8080 --name calculator 192.168.1.2:5000/calculator"
       }
     }
     stage("Smoke test") {
